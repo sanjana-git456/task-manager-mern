@@ -99,76 +99,89 @@ function App() {
   const [filter, setFilter] = useState('all');
 
   return (
-    <div>
-      <h1>Task Manager</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Title"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Description"
-          value={description}
-          onChange={e => setDescription(e.target.value)}
-        />
-        <button type="submit">Add Task</button>
-      </form>
-
+    <div style={{ maxWidth: '600px', margin: '20px auto', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
       <div>
-        <p>Pending: {pendingCount} | Completed: {completedCount}</p>
-      </div>
+        <h1 style={{ textAlign: 'center', color: '#131558ff' }}>Task Manager</h1>
+        
+        <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '10px', marginBottom: '20px'}}>
+          <input
+            type="text"
+            placeholder="Title"
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+            style={{ flex: 1, padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
+          />
+          <input
+            type="text"
+            placeholder="Description"
+            value={description}
+            onChange={e => setDescription(e.target.value)}
+            style={{ flex: 1, padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
+          />
+          <button type="submit" style={{ padding: '8px 12px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Add Task</button>
+        </form>
 
-      <div>
-        <button onClick={() => setFilter('all')}>All</button>
-        <button onClick={() => setFilter('pending')}>Pending</button>
-        <button onClick={() => setFilter('completed')}>Completed</button>
-      </div>
+        <div>
+          <p>Pending: {pendingCount} | Completed: {completedCount}</p>
+        </div>
 
-      <ul>
-        {tasks
-        .filter(task => filter === 'all' || task.status === filter)
-        .map(task => (
-          <li
-            key={task._id}
-            style={{
-              textDecoration: task.status === 'completed' ? 'line-through' : 'none',
-              color: task.status === 'completed' ? 'gray' : 'black'
-            }}
-          >
-            {editingTaskId === task._id ? (
-              <>
-                <input value={editingTitle} onChange={e => setEditingTitle(e.target.value)} />
-                <input value={editingDescription} onChange={e => setEditingDescription(e.target.value)} />
-                <button type="button" onClick={() => saveEdit(task._id)}>Save</button>
-                <button type="button" onClick={() => setEditingTaskId(null)}>Cancel</button>
-              </>
-            ) : (
-              <>
-                <strong>{task.title}</strong>: {task.description} [{task.status}]
-                <button onClick={() => deleteTask(task._id)}>Delete</button>
-                <button
-                  onClick={() => toggleStatus(task._id, task.status)}
-                  style={{
-                    backgroundColor: task.status === 'pending' ? 'green' : 'orange',
-                    color: 'white',
-                    border: 'none',
-                    padding: '5px 10px',
-                    marginLeft: '10px',
-                    cursor: 'pointer',
-                    borderRadius: '4px'
-                  }}
-                >
-                  {task.status === 'pending' ? 'Mark Completed' : 'Mark Pending'}
-                </button>
-                <button onClick={() => startEditing(task)}>Edit</button>
-              </>
-            )}
-          </li>
-        ))}
-      </ul>
+        <div>
+          <button onClick={() => setFilter('all')}>All</button>
+          <button onClick={() => setFilter('pending')}>Pending</button>
+          <button onClick={() => setFilter('completed')}>Completed</button>
+        </div>
+
+        <ul>
+          {tasks
+          .filter(task => filter === 'all' || task.status === filter)
+          .map(task => (
+            <li
+              key={task._id}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '10px 15px',
+                marginBottom: '8px',
+                borderRadius: '8px',
+                boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+                backgroundColor: task.status === 'completed' ? '#f0f0f0' : '#fff',
+                textDecoration: task.status === 'completed' ? 'line-through' : 'none',
+                color: task.status === 'completed' ? 'gray' : 'black'
+              }}
+            >
+              {editingTaskId === task._id ? (
+                <>
+                  <input value={editingTitle} onChange={e => setEditingTitle(e.target.value)} />
+                  <input value={editingDescription} onChange={e => setEditingDescription(e.target.value)} />
+                  <button type="button" onClick={() => saveEdit(task._id)}>Save</button>
+                  <button type="button" onClick={() => setEditingTaskId(null)}>Cancel</button>
+                </>
+              ) : (
+                <>
+                  <strong>{task.title}</strong>: {task.description} [{task.status}]
+                  <button onClick={() => deleteTask(task._id)}>Delete</button>
+                  <button
+                    onClick={() => toggleStatus(task._id, task.status)}
+                    style={{
+                      backgroundColor: task.status === 'pending' ? 'green' : 'orange',
+                      color: 'white',
+                      border: 'none',
+                      padding: '5px 10px',
+                      marginLeft: '10px',
+                      cursor: 'pointer',
+                      borderRadius: '4px'
+                    }}
+                  >
+                    {task.status === 'pending' ? 'Mark Completed' : 'Mark Pending'}
+                  </button>
+                  <button onClick={() => startEditing(task)}>Edit</button>
+                </>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   )
 }
