@@ -91,6 +91,9 @@ function App() {
     }
   };
 
+  //filter
+  const [filter, setFilter] = useState('all');
+
   return (
     <div>
       <h1>Task Manager</h1>
@@ -110,8 +113,16 @@ function App() {
         <button type="submit">Add Task</button>
       </form>
 
+      <div>
+        <button onClick={() => setFilter('all')}>All</button>
+        <button onClick={() => setFilter('pending')}>Pending</button>
+        <button onClick={() => setFilter('completed')}>Completed</button>
+      </div>
+      
       <ul>
-        {tasks.map(task => (
+        {tasks
+        .filter(task => filter === 'all' || task.status === filter)
+        .map(task => (
           <li
             key={task._id}
             style={{
