@@ -74,6 +74,10 @@ function App() {
     }
   };
 
+  //count
+  const pendingCount = tasks.filter(task => task.status === 'pending').length;
+  const completedCount = tasks.filter(task => task.status === 'completed').length;
+
   //handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -114,11 +118,15 @@ function App() {
       </form>
 
       <div>
+        <p>Pending: {pendingCount} | Completed: {completedCount}</p>
+      </div>
+
+      <div>
         <button onClick={() => setFilter('all')}>All</button>
         <button onClick={() => setFilter('pending')}>Pending</button>
         <button onClick={() => setFilter('completed')}>Completed</button>
       </div>
-      
+
       <ul>
         {tasks
         .filter(task => filter === 'all' || task.status === filter)
