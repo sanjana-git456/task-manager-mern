@@ -99,7 +99,7 @@ function App() {
   const [filter, setFilter] = useState('all');
 
   return (
-    <div style={{ maxWidth: '600px', margin: '20px auto', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+    <div style={{ maxWidth: '600px', margin: '20px auto', padding: '20px', fontFamily: 'Times New Roman, sans-serif' }}>
       <div>
         <h1 style={{ textAlign: 'center', color: '#131558ff' }}>Task Manager</h1>
         
@@ -125,10 +125,63 @@ function App() {
           <p>Pending: {pendingCount} | Completed: {completedCount}</p>
         </div>
 
+        <div style={{ margin: '10px 0' }}>
+          <div
+            style={{
+              height: '8px',
+              backgroundColor: '#eee',
+              borderRadius: '5px',
+              overflow: 'hidden'
+            }}
+          >
+            <div
+              style={{
+                height: '100%',
+                width: `${(completedCount / (pendingCount + completedCount || 1)) * 100}%`,
+                backgroundColor: '#4CAF50'
+              }}
+            />
+        </div>
+      </div>        
+
         <div>
-          <button onClick={() => setFilter('all')}>All</button>
-          <button onClick={() => setFilter('pending')}>Pending</button>
-          <button onClick={() => setFilter('completed')}>Completed</button>
+          <button
+          onClick={() => setFilter('all')}
+          style={{
+            padding: '6px 12px',
+            marginRight: '8px',
+            borderRadius: '20px',
+            backgroundColor: filter === 'all' ? '#474979ff' : '#f5f5f5',
+            color: filter === 'all' ? 'white' : 'black',
+            cursor: 'pointer'
+          }}
+          >
+            All
+          </button>
+          <button onClick={() => setFilter('pending')}
+          style={{
+            padding: '6px 12px',
+            marginRight: '8px',
+            borderRadius: '20px',
+            backgroundColor: filter === 'pending' ? '#474979ff' : '#f5f5f5',
+            color: filter === 'pending' ? 'white' : 'black',
+            cursor: 'pointer'
+          }}
+            >
+              Pending
+          </button>
+          <button onClick={() => setFilter('completed')}
+          style={{
+            padding: '6px 12px',
+            marginRight: '8px',
+            borderRadius: '20px',
+            backgroundColor: filter === 'completed' ? '#474979ff' : '#f5f5f5',
+            color: filter === 'completed' ? 'white' : 'black',
+            cursor: 'pointer'
+          }}
+            >
+              Completed
+          </button>
         </div>
 
         <ul>
@@ -146,21 +199,58 @@ function App() {
                 borderRadius: '8px',
                 boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
                 backgroundColor: task.status === 'completed' ? '#f0f0f0' : '#fff',
-                textDecoration: task.status === 'completed' ? 'line-through' : 'none',
-                color: task.status === 'completed' ? 'gray' : 'black'
               }}
             >
               {editingTaskId === task._id ? (
-                <>
-                  <input value={editingTitle} onChange={e => setEditingTitle(e.target.value)} />
-                  <input value={editingDescription} onChange={e => setEditingDescription(e.target.value)} />
-                  <button type="button" onClick={() => saveEdit(task._id)}>Save</button>
-                  <button type="button" onClick={() => setEditingTaskId(null)}>Cancel</button>
-                </>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', width: '100%' }}>
+                  <input
+                    value={editingTitle}
+                    onChange={e => setEditingTitle(e.target.value)}
+                    style={{ padding: '6px 8px', borderRadius: '4px', border: '1px solid #ccc', width: '100%' }}
+                  />
+
+                  <input
+                    value={editingDescription}
+                    onChange={e => setEditingDescription(e.target.value)}
+                    style={{ padding: '6px 8px', borderRadius: '4px', border: '1px solid #ccc', width: '100%' }}
+                  />
+                  <div style={{ display: 'flex', gap: '6px' }}>
+                    <button
+                      type="button"
+                      onClick={() => saveEdit(task._id)}
+                      style={{ padding: '5px 10px', borderRadius: '4px', border: 'none', backgroundColor: '#4CAF50', color: 'white', cursor: 'pointer' }}
+                      >
+                        Save
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setEditingTaskId(null)}
+                      style={{ padding: '5px 10px', borderRadius: '4px', border: 'none', backgroundColor: '#ccc', color: 'black', cursor: 'pointer' }}
+                      >
+                        Cancel
+                    </button>
+                  </div>
+                </div>
               ) : (
                 <>
-                  <strong>{task.title}</strong>: {task.description} [{task.status}]
-                  <button onClick={() => deleteTask(task._id)}>Delete</button>
+                  <div style={{ flex: 1, minwidth: '150px' }}>
+                    <strong>{task.title}</strong>: {task.description} [{task.status}]
+                  </div>
+
+                  <div style={{ textDecoration: task.status === 'completed' ? 'line-through' : 'none', color: task.status === 'completed' ? 'gray' : 'black', flex: 1 }}>
+                    <strong>{task.title}</strong>: {task.description} [{task.status}]
+                  </div>
+
+
+                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                    <button
+                    onClick={() => deleteTask(task._id)}
+                    style={{ padding: '5px 10px', borderRadius: '4px', border: 'none', backgroundColor: '#f44336', color: 'white', cursor: 'pointer', fontFamily: 'Times New Roman, sans-serif' }}
+                    >
+                      Delete
+                    </button>
+                                  
                   <button
                     onClick={() => toggleStatus(task._id, task.status)}
                     style={{
@@ -170,13 +260,20 @@ function App() {
                       padding: '5px 10px',
                       marginLeft: '10px',
                       cursor: 'pointer',
-                      borderRadius: '4px'
+                      borderRadius: '4px',
+                      fontFamily: 'Times New Roman, sans-serif'
                     }}
                   >
                     {task.status === 'pending' ? 'Mark Completed' : 'Mark Pending'}
                   </button>
-                  <button onClick={() => startEditing(task)}>Edit</button>
-                </>
+                  <button
+                  onClick={() => startEditing(task)}
+                  style={{ padding: '5px 10px', borderRadius: '4px', border: 'none', backgroundColor: '#2196F3', color: 'white', cursor: 'pointer', fontFamily: 'Times New Roman, sans-serif' }}
+                  >
+                    Edit
+                  </button>
+                </div>
+              </>
               )}
             </li>
           ))}
